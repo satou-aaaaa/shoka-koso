@@ -28,7 +28,7 @@ const CL = { "アミラーゼ": ["denpun", "daeki", "デンプンを分解"], "�
 const TB = {
   a_daeki: ["アミラーゼ", "だ液"], p_ieki: ["ペプシン", "胃液"], t_suieki: ["トリプシン", "すい液.*タンパク質"], r_suieki: ["リパーゼ", "すい液.*脂肪"], j_kanzo: ["胆汁", "胆のう"],
   a_bakuga: ["アミラーゼ", "麦芽糖"], p_ph2: ["ペプシン", "pH2"], t_zenbu: ["トリプシン", "すべてふくむ"], r_glycerol: ["リパーゼ", "グリセロール"], j_nyuka: ["胆汁", "乳化"],
-  a_both: ["アミラーゼ", "ブドウ糖"], p_ensan: ["ペプシン", "ペプシノーゲン"], t_protease: ["トリプシン", "プロテアーゼ"], r_menseki: ["リパーゼ", "面積"], j_700: ["胆汁", "700"],
+  a_both: ["アミラーゼ", "だ液にもすい液にも"], p_ensan: ["ペプシン", "ペプシノーゲン"], t_protease: ["トリプシン", "プロテアーゼ"], r_menseki: ["リパーゼ", "面積"], j_700: ["胆汁", "700"],
 };
 {
   const bad = {}, seen = {}, N = 3000;
@@ -67,6 +67,7 @@ const TB = {
   check("説明は110字以内・ヒントは60字以内（答えの決め手は110字）・問いは70字以内（やさしい日本語。一文を短く）", !longWhy.length && !longLook.length && !longOpt.length, longWhy.concat(longLook, longOpt.slice(0, 3)).join(","));
   const okSrc = Object.values(G.SRC).every(([n, u]) => /^https:\/\/(www\.pref\.osaka\.lg\.jp\/documents\/25642\/|www\.osaka-c\.ed\.jp\/|dmzcms\.hyogo-c\.ed\.jp\/|www\.pref\.hiroshima\.lg\.jp\/|www\.tyojyu\.or\.jp\/)/.test(u) && n);
   check("出典は大阪府教育委員会、大阪府教育センター、兵庫県立高校、広島県、長寿科学振興財団だけ", okSrc);
+  check("アミラーゼの問い・説明で「ブドウ糖にする」と書かない（だ液のアミラーゼは麦芽糖などにする。CodeRabbit 2026-11-17）", !G.KINDS.some((k) => k.ans === "アミラーゼ" && /ブドウ糖/.test(k.why + G.make(k.id + "|1").q)));
   check("問いに病気や薬の言葉を出さない（くらしの助言にしない）", !G.KINDS.some((k) => { for (let i = 0; i < 100; i++) { const P = G.make(`${k.id}|nz${i}`); if (/病気|薬|サプリ|治療|ダイエット/.test(P.q + P.why)) return true; } return false; }));
 }
 {
