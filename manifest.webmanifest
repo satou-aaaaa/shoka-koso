@@ -1,0 +1,23 @@
+{
+  "name": "消化酵素あて",
+  "short_name": "消化酵素あて",
+  "description": "説明から消化酵素などを当てる中学理科の1日5問",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3efe4",
+  "theme_color": "#f3efe4",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
