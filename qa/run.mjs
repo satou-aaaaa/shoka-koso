@@ -368,6 +368,11 @@ try {
     await g.evaluate((k) => localStorage.setItem(k, JSON.stringify({ v: 1, tut: true, runs: { p: { mode: "p", date: "2026-11-17", list: [], res: [], cur: { wrong: [], w2: [{ toString: null }, "x"], hints: 0, step: 2 }, id: "w" } } })), "skk-v1");
     await g.reload(); await g.waitForTimeout(200);
     check("途中経過の2段目のまちがい（w2）に変な値（{toString:null}）が入っても、ホームが開く（CodeRabbit jotai-henka#1）", errors.length === before2 && await g.locator("#go-d").count() === 1, errors.slice(before2).join(","));
+    const before4 = errors.length;
+    await g.evaluate(([k, t]) => localStorage.setItem(k, JSON.stringify({ v: 1, tut: true, runs: { e: { mode: "e", date: "2026-11-17", list: [t], res: [], cur: null, id: { toString: null } } } })), ["skk-v1", G.KINDS[0].id + "|x"]);
+    await g.reload(); await g.waitForTimeout(200);
+    await g.locator("#go-e").click(); await g.waitForTimeout(200);
+    check("保存した回の id に変な値（{toString:null}）が入っても、とことんを始められる（CodeRabbit 2026-11-17）", errors.length === before4 && await g.locator("#choices .ch").count() > 0, errors.slice(before4).join(","));
     await ctx.close();
   }
 
