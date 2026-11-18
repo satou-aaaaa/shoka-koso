@@ -103,6 +103,10 @@ check("乱数は sort の比較の中で引かない（ブラウザで引く回�
 check("言い方：「必ず」「絶対」と言い切らない", !/必ず|絶対/.test(html.replace(/\/\/[^\n]*/g, "") + gen.replace(/\/\/[^\n]*/g, "") + readme));
 { const howto = (html.match(/<dialog id="howto"[\s\S]*?<\/dialog>/) || [""])[0], ab = (html.match(/function about\(\)[\s\S]*?\n}/) || [""])[0], dis = (t) => /教科書/.test(t) && /代わりではありません|確かめて/.test(t);
   check("言い方：遊び方・「このゲームについて」・README のどれにも、教科書で確かめることがある", dis(howto) && dis(ab) && dis(readme), `遊び方 ${dis(howto)}・について ${dis(ab)}`); }
+// 「くわしく調べる所」の2つ目のリンク（CH）の持ち主の名前。CH を変えたら、ここにも足す（2026-11-17、写し元の「大阪府のホームページ」が別の県のリンクに残っていた）
+const CHNAME = { "www.pref.osaka.lg.jp": "大阪府", "www.osaka-c.ed.jp": "大阪府教育センター", "www.pref.chiba.lg.jp": "千葉県教育委員会", "www.edu-c.pref.miyagi.jp": "宮城県総合教育センター", "energy-kyoiku.meti.go.jp": "経済産業省", "www.gmnh.pref.gunma.jp": "群馬県立自然史博物館", "www.pref.okayama.jp": "岡山県" };
+{ const ch = (html.match(/\bCH = "(https:[^"]+)"/) || [])[1]; const lab = (html.match(/<a href="\$\{CH\}"[^>]*>([^<]+)<\/a>/) || [])[1]; const want = ch && CHNAME[new URL(ch).host];
+  check("「くわしく調べる所」の2つ目のリンクの名前が、リンク先の持ち主と合う（写し元の名前が残らない）", !!want && !!lab && lab.startsWith(want), `${ch} ${lab}`); }
 check("写し元（エネルギーの種類あて・顕微鏡の部品あて・細胞のつくりあて・状態変化あて・光の進み方あて・無脊椎動物なかま分け・力の種類あて・季節の天気あて・気体あて・液性よみ・植物なかま分け・動物なかま分け・なに税？）の言葉が残っていない（game-dev.md A 手順5）", !/憲法|国会|内閣|裁判所|天皇|国事行為|しくみ帳|kenpo|kps|KPS|税|納め|財務省|e-Gov|zeikin|zni|ZNI|国税庁|哺乳|呼吸|dnk|DNK|ズーネット|海遊館|胚珠|維管束|子葉|shokubutsu|snk|SNK|液性|洗剤|eky|EKY|ekisei|消費者庁|石灰水|kta|KTA|天気|季節|気団|kst|KST|kisetsu|磁力|cks|CKS|chikara|昆虫|甲殻|クモ|多足|軟体|無脊椎|msk|MSK|musekitsui|屈折|直進|hks|HKS|hikari|融解|凝固|蒸発|凝縮|昇華|jth|JTH|jotai|状態変化|葉緑体|液胞|sbt|SBT|saibo|顕微鏡|レンズ|knb|KNB|kenbikyo|エネルギー|ens-|ENS|energy/.test(html + gen + readme));
 { const a11 = JSON.parse(readFileSync(path.join(root, "qa/a11y.json"), "utf8"));
   check("見やすさの検査の画面の名前（qa/a11y.json）が、このゲームの画面にある名前（写し元の名前が残らない。CodeRabbit ekisei-yomi#1 の「雲帳」）", (a11.screens || []).every((x) => html.includes(x.name)), (a11.screens || []).map((x) => x.name).join(",")); }
